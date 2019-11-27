@@ -1,47 +1,93 @@
-#include <iostream> 
+#include<iostream>
 using namespace std;
+const int MAX = 10;
 
-int BinarySearch(int arrElements[], int firstIndex, int lastIndex, int elementToSearch)
+class CBinarySearch
 {
-	
-	if (lastIndex >= firstIndex) 
+	int nList[MAX];
+	int nCount;
+public:
+	CBinarySearch(void);
+	void AddItemToList(int nItem);
+	void SearchItemInList(int nItem);
+	void PrintList();
+	~CBinarySearch(void);
+};
+
+CBinarySearch::CBinarySearch(void)
+{
+	nCount = 0;
+	for (int i = 0; i < MAX; i++)
 	{
-		int midOfArray = (firstIndex + lastIndex) / 2;
-
-		if (arrElements[midOfArray] == elementToSearch)
-		{
-			return midOfArray;
-		}
-		else if (arrElements[midOfArray] > elementToSearch)
-		{
-			return BinarySearch(arrElements, firstIndex, midOfArray - 1, elementToSearch);
-		}
-		else
-		{
-			return BinarySearch(arrElements, midOfArray + 1, lastIndex, elementToSearch);
-		}
+		nList[i] = 0;
 	}
-
-	return -1;
 }
 
-int main(void)
-{
-	int arrElements[] = { 1, 3, 5, 7, 11, 16, 21, 27, 35, 40 };
-	int elementToSearch = 1;
-	int sizeOfArray = sizeof(arrElements) / sizeof(arrElements[0]);
-	int output = BinarySearch(arrElements, 0, sizeOfArray-1 ,  elementToSearch);
+CBinarySearch::~CBinarySearch(void) {}
 
-	if (output == -1)
+void CBinarySearch::AddItemToList(int nItem)
+{
+	if (nCount < MAX)
 	{
-		cout << "Element is not present";
+		nList[nCount] = nItem;
+		nCount++;
 	}
 	else
+		cout << "List is Full !!!!! \n";
+}
+
+
+
+void CBinarySearch::SearchItemInList(int nItem)
+{
+	int nMid, nLower = 0, nUpper = nCount - 1, flag = 1;
+	for (; nLower <= nUpper;)
 	{
-		cout << "Element is present at index " << output;
+		nMid = (nLower + nUpper) / 2;
+		if (nList[nMid] == nItem)
+		{
+			cout << "\nNumber is present at " << nMid << " Location in List ";
+			flag = 0;
+			break;
+		}
+		if (nList[nMid] > nItem)
+			nUpper = nMid - 1;
+		else
+			nLower = nMid + 1;
+	}
+	if (flag)
+		cout << "\nNumber is not present in List\n";
+}
+void CBinarySearch::PrintList()
+{
+	cout << "\nPrinting List ";
+	for (int nListCounter = 0; nListCounter < MAX; nListCounter++)
+	{
+		cout << " :: " << nList[nListCounter];
 	}
 
-	int wait;
-		cin >> wait;
-	return 0;
+}
+
+int main()
+{
+	CBinarySearch objBSList;
+
+	objBSList.AddItemToList(10);
+	objBSList.AddItemToList(21);
+	objBSList.AddItemToList(32);
+	objBSList.AddItemToList(43);
+	objBSList.AddItemToList(54);
+	objBSList.AddItemToList(65);
+	objBSList.AddItemToList(76);
+	objBSList.AddItemToList(87);
+	objBSList.AddItemToList(98);
+	objBSList.AddItemToList(109);
+	objBSList.AddItemToList(120);
+
+	objBSList.PrintList();
+	int nNumberToSearch;
+	cout << "Enter number to Search :: ";
+	cin >> nNumberToSearch;
+	objBSList.SearchItemInList(nNumberToSearch);
+	return 1;
 }
